@@ -8,9 +8,11 @@ For more detail, please visit:
 Working with Front-end:
 > [Vue.js JWT Authentication with Vuex and Vue Router](https://bezkoder.com/jwt-vue-vuex-authentication/)
 
-> [Angular 8 JWT Authentication with HttpInterceptor and Router](https://bezkoder.com/angular-jwt-authentication/)
+> [Angular 8 JWT Authentication example](https://bezkoder.com/angular-jwt-authentication/)
 
-> [Angular 10 JWT Authentication with HttpInterceptor and Router](https://bezkoder.com/angular-10-jwt-auth/)
+> [Angular 10 JWT Authentication example](https://bezkoder.com/angular-10-jwt-auth/)
+
+> [Angular 11 JWT Authentication example](https://bezkoder.com/angular-11-jwt-auth/)
 
 > [React JWT Authentication & Authorization (without Redux) example](https://bezkoder.com/react-jwt-auth/)
 
