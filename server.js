@@ -1,20 +1,15 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const config = require('dotenv').config();
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json());
+app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 // database
 const db = require("./app/models");
@@ -22,7 +17,7 @@ const Role = db.role;
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and Resync Database with { force: true }');
   initial();
 });
@@ -47,12 +42,12 @@ function initial() {
     id: 1,
     name: "user"
   });
- 
+
   Role.create({
     id: 2,
     name: "moderator"
   });
- 
+
   Role.create({
     id: 3,
     name: "admin"
