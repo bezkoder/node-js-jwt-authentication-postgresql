@@ -1,14 +1,16 @@
-const db = require("../models");
-const config = require("../config/auth.config");
+import { RequestHandler } from "express";
+import { db } from "../models";
+import { Op } from "sequelize";
+import { config } from "../config/auth.config";
 const User = db.user;
 const Role = db.role;
 
-const Op = db.Sequelize.Op;
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
+import * as  jwt from "jsonwebtoken";
+import * as  bcrypt from "bcryptjs";
+
+export const signup: RequestHandler = (req, res) => {
   // Save User to Database
   User.create({
     username: req.body.username,
@@ -24,12 +26,12 @@ exports.signup = (req, res) => {
             }
           }
         }).then(roles => {
+          
           user.setRoles(roles).then(() => {
             res.send({ message: "User registered successfully!" });
           });
         });
       } else {
-        // user role = 1
         user.setRoles([1]).then(() => {
           res.send({ message: "User registered successfully!" });
         });
@@ -40,7 +42,7 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+export const signin: RequestHandler = (req, res) => {
   User.findOne({
     where: {
       username: req.body.username
@@ -67,7 +69,7 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
-      var authorities = [];
+      var authorities = [] as string[];
       user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());

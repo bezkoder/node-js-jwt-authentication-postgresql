@@ -1,10 +1,15 @@
-const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
-const db = require("../models");
-const User = db.user;
+import { RequestHandler } from 'express';
+import jwt from "jsonwebtoken";
+import { config } from "../config/auth.config";
+import { db } from "../models";
+import { User } from '../models/user.model';
 
-verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+
+
+
+
+const verifyToken: RequestHandler = (req, res, next) => {
+  let token = req.headers["x-access-token"] as string;
 
   if (!token) {
     return res.status(403).send({
@@ -12,20 +17,20 @@ verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, config.secret, (err: any, decoded: any) => {
     if (err) {
       return res.status(401).send({
         message: "Unauthorized!"
       });
     }
-    req.userId = decoded.id;
+    (req as any).userId = decoded.id;
     next();
   });
 };
 
-isAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
+const isAdmin: RequestHandler = (req, res, next) => {
+  User.findByPk((req as any).userId).then(user => {
+    user!.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "admin") {
           next();
@@ -41,9 +46,9 @@ isAdmin = (req, res, next) => {
   });
 };
 
-isModerator = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
+const isModerator: RequestHandler = (req, res, next) => {
+  User.findByPk((req as any).userId).then(user => {
+    user!.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "moderator") {
           next();
@@ -58,9 +63,9 @@ isModerator = (req, res, next) => {
   });
 };
 
-isModeratorOrAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
-    user.getRoles().then(roles => {
+const isModeratorOrAdmin: RequestHandler = (req, res, next) => {
+  User.findByPk((req as any).userId).then(user => {
+    user!.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "moderator") {
           next();
@@ -80,10 +85,10 @@ isModeratorOrAdmin = (req, res, next) => {
   });
 };
 
-const authJwt = {
+export const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isModerator: isModerator,
   isModeratorOrAdmin: isModeratorOrAdmin
 };
-module.exports = authJwt;
+
