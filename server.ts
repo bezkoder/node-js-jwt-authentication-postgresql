@@ -1,6 +1,6 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
 
 const app = express();
 
@@ -17,12 +17,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // database
-const db = require("./app/models");
+import { db } from "./app/models";
+import { authRoutes } from "./app/routes/auth.routes";
+import { userRoutes } from "./app/routes/user.routes";
 const Role = db.role;
 
 // db.sequelize.sync();
 // force: true will drop the table if it already exists
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log('Drop and Resync Database with { force: true }');
   initial();
 });
@@ -33,8 +35,8 @@ app.get("/", (req, res) => {
 });
 
 // routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+authRoutes(app);
+userRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -47,12 +49,12 @@ function initial() {
     id: 1,
     name: "user"
   });
- 
+
   Role.create({
     id: 2,
     name: "moderator"
   });
- 
+
   Role.create({
     id: 3,
     name: "admin"

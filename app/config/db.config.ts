@@ -1,4 +1,4 @@
-module.exports = {
+export const config = {
   HOST: "localhost",
   USER: "postgres",
   PASSWORD: "123",
