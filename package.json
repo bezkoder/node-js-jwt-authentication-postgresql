@@ -13,7 +13,7 @@
     "authentication",
     "postgresql"
   ],
-  "author": "bezkoder",
+  "author": "MD.Rahim Sarker",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
